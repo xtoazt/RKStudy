@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RKStudy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      color: #333;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      font-size: 16px;
+    }
+    button {
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>AI Study Tool</h1>
+  <input type="text" id="topic" placeholder="Enter your topic" style="width: 100%; max-width: 400px;">
+  <button onclick="search()">Search</button>
+  <div id="output"></div>
+
+  <script>
+    async function search() {
+      const topic = document.getElementById("topic").value;
+      const response = await fetch("/api/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: topic }),
+      });
+      const data = await response.json();
+
+      const outputDiv = document.getElementById("output");
+      if (data.error) {
+        outputDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+      } else {
+        outputDiv.innerHTML = `
+          <h2>Summary</h2>
+          <p>${data.summary}</p>
+          <h2>Citations</h2>
+          <ul>${data.citations.map(cite => `<li>${cite}</li>`).join("")}</ul>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
