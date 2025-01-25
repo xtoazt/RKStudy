@@ -8,7 +8,7 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #f4f4f9;
+      background-color: #eef2f7;
     }
     h1 {
       color: #333;
@@ -27,7 +27,7 @@
   </style>
 </head>
 <body>
-  <h1>Free AI Study Tool</h1>
+  <h1>AI Study Tool</h1>
   <input type="text" id="query" placeholder="Enter your topic" style="width: 100%; max-width: 400px;">
   <button onclick="search()">Search</button>
   <div id="results"></div>
@@ -49,13 +49,11 @@
         resultsDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
       } else {
         resultsDiv.innerHTML = `
-          <h2>Summary</h2>
-          <p>${data.summary}</p>
-          <h2>Sources</h2>
-          <ul>${data.sources
+          <h2>Top Results</h2>
+          <ul>${data.results
             .map(
-              (source) =>
-                `<li><a href="${source.link}" target="_blank">${source.title}</a>: ${source.snippet}</li>`
+              (result) =>
+                `<li><a href="${result.link}" target="_blank">${result.title}</a></li>`
             )
             .join("")}</ul>
         `;
