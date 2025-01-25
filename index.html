@@ -8,7 +8,7 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #f9f9f9;
+      background-color: #f4f4f9;
     }
     h1 {
       color: #333;
@@ -21,36 +21,43 @@
     button {
       cursor: pointer;
     }
-    #output {
+    #results {
       margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>AI Study Tool</h1>
-  <input type="text" id="topic" placeholder="Enter your topic" style="width: 100%; max-width: 400px;">
+  <h1>Free AI Study Tool</h1>
+  <input type="text" id="query" placeholder="Enter your topic" style="width: 100%; max-width: 400px;">
   <button onclick="search()">Search</button>
-  <div id="output"></div>
+  <div id="results"></div>
 
   <script>
     async function search() {
-      const topic = document.getElementById("topic").value;
+      const query = document.getElementById("query").value;
+
       const response = await fetch("/api/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: topic }),
+        body: JSON.stringify({ query }),
       });
-      const data = await response.json();
 
-      const outputDiv = document.getElementById("output");
+      const data = await response.json();
+      const resultsDiv = document.getElementById("results");
+
       if (data.error) {
-        outputDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+        resultsDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
       } else {
-        outputDiv.innerHTML = `
+        resultsDiv.innerHTML = `
           <h2>Summary</h2>
           <p>${data.summary}</p>
-          <h2>Citations</h2>
-          <ul>${data.citations.map(cite => `<li>${cite}</li>`).join("")}</ul>
+          <h2>Sources</h2>
+          <ul>${data.sources
+            .map(
+              (source) =>
+                `<li><a href="${source.link}" target="_blank">${source.title}</a>: ${source.snippet}</li>`
+            )
+            .join("")}</ul>
         `;
       }
     }
