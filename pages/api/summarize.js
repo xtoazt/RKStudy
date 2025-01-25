@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const response = await fetch("https://api-inference.huggingface.co/models/facebook/bart-large-cnn", {
       method: "POST",
       headers: {
-        Authorization: `Bearer hf_xxxxxx`, // Replace with your Hugging Face token
+        Authorization: `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`, // Replace with your Hugging Face token
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ inputs: content }),
